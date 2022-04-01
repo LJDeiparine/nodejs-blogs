@@ -1,0 +1,80 @@
+<html lang="en">
+  <%- include('../partials/head.ejs')%>
+<body>
+
+  <%- include('../partials/nav.ejs')%>
+
+
+  <div>
+    <div class="container-fluid header" style="height: 80vh;">
+
+      <div class="banner-hero">
+        <h1 class="welcome-hero"> Welcome to my <h1 class="scripts-hero" > blogs</h1></h1>
+      </div>
+    </div>
+
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-4 pt-3"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 p-5"><h2 class="all-blogs" id="Blogs"> All Blogs </h2></div>
+        <div class="col-md-4 offset-md-4 p-5">
+          <span class="deleteAll" data-doc="<%= blogs._id %>"  title="Delete All"><i class="fa-solid fa-trash"></i>  Delete All Blogs</span>
+        </div>
+      </div>
+
+ 
+      <div class="blogs content">
+         
+          
+      <% if (blogs.length > 0){ %>
+          
+          <% blogs.forEach(blog => { %>  
+            
+
+            <div class="card-group" style="display: inline-block;">
+              <div class="card">
+                <img src="/nature.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title"><%= blog.title %></h5>
+                  <p class="card-text"><%= blog.snippet %></p>
+                  <p class="card-text">By: <%= blog.author %></p>
+                  <button type="button-blogs" class="btn btn-primary"><a class="view-button" href="/blogs/<%= blog._id %>">view blog</a></button>
+                </div>
+              </div>
+            </div>
+          
+        
+          <% }) %>
+
+        
+        
+      <% } else {%>
+
+          <p> There are no blogs to display</p>
+
+        <% } %>
+      
+      </div>
+    </div>
+
+    <%- include('../partials/footer.ejs')%>
+
+    <script>
+      const trashAll = document.querySelector('span.deleteAll');
+      trashAll.addEventListener('click', (e) => {
+        const endpoint = `/blogs/${trashAll.dataset.doc}`;
+        fetch(endpoint, {
+          method: 'DELETE',
+        })
+        .then(response => response.json())
+        .then(data => window.location.href = data.redirect)
+        .catch(err => console.log(err));
+      });
+      
+    </script>
+</body>
+
+</html>
